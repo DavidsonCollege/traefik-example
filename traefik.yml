@@ -1,0 +1,81 @@
+
+
+# #############################################################################
+# static traefik config
+# #############################################################################
+
+# #############################################################################
+# public connection entrypoint
+entryPoints:
+  
+  # unencrypted HTTP requests
+  web:
+    address: ":80"
+    http: 
+      # all unencrypted HTTP requests (web) are redirected to HTTPS (websecure)
+      redirections: 
+        entryPoint:
+          to: websecure
+          scheme: https
+
+  # secure HTTP requests
+  websecure:
+    address: ":443"
+    http: 
+      # require connection use TLS/SSL
+      tls: {}
+
+# #############################################################################
+#  certificate generation/issuing
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      ## certificate environment cert-auth server
+      caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
+
+      # for real "prod" certificates use:
+      #   "https://acme-v02.api.letsencrypt.org/directory"
+
+      email: "ti@davidson.edu"
+      storage: "private.acme.json"
+      tlsChallenge: {} # use TLS-based challenge instead of HTTP-based
+
+# #############################################################################
+# dynamic configuration providers
+providers:
+  
+  # simplest config provider
+  file:
+    # directory to load/reload configuration snippets from
+    directory: conf.d
+
+    # whether to watch directory and load new/changed files
+    watch: true
+    
+# api & dashboard
+api:
+  dashboard: true
+  insecure: true # dashboard is read-only
+
+# #############################################################################
+# metrics
+metrics:
+  prometheus:
+    manualRouting: true
+    addServicesLabels: true
+    buckets:
+      - 0.1
+      - 0.3
+      - 1.2
+      - 5.0
+
+# #############################################################################
+# logging
+log:
+  filePath: "logs/traefik.log"
+  format: "json"
+  level: "DEBUG"
+
+# access logs
+accessLog:
+  filePath: "logs/traefik-access.log"

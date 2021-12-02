@@ -1,0 +1,7 @@
+
+http:
+  services:
+    redirect:
+      loadbalancer:
+        servers: 
+        - url: "https://davidson.edu"
