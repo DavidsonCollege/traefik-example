@@ -1,7 +1,8 @@
-
+# Generic HTTP Service Providers ##############################################
 http:
   services:
     redirect:
       loadbalancer:
         servers: 
+        # `url` doesn't matter, redirects won't get here 
         - url: "https://davidson.edu"
