@@ -5,9 +5,8 @@
 # #############################################################################
 
 # #############################################################################
-# public connection entrypoint
+# public connection entrypoints
 entryPoints:
-  
   # unencrypted HTTP requests
   web:
     address: ":80"
