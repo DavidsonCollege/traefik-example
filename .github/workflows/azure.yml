@@ -39,4 +39,6 @@ jobs:
             registry-password: ${{ secrets.GHCR_PASS }}
             name: test-traefik-service
             location: 'east us'
+            restart-policy: OnFailure
+            
             
