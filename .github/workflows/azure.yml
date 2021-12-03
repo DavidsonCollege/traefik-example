@@ -33,6 +33,7 @@ jobs:
             resource-group: development
             dns-name-label: traefik-example-2asdf
             image: ghcr.io/davidsoncollege/traefik-example:latest
+            registry-login-server: ghcr.io
             registry-username: ${{ github.actor }}
             registry-password: ${{ secrets.GHCR_PASS }}
             name: test-traefik-service
