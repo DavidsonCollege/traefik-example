@@ -1,0 +1,25 @@
+name: Update_Container_Azure
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  update-container:
+    runs-on: ubuntu-latest
+    steps:
+    
+    - name: Azure: Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDS }}
+    
+    - name: Azure: Run "git pull" In Container
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.30.0
+        inlineScript: |
+          az container exec --resource-group development --name test-traefik-service \
+            --exec-command "git pull"
+          
