@@ -1,0 +1,40 @@
+name: Build_Deploy_Azure
+
+on: 
+  push: 
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+        # checkout the repo
+        - name: 'Checkout GitHub Action'
+          uses: actions/checkout@master
+          
+        - name: 'Login via Azure CLI'
+          uses: azure/login@v1
+          with:
+            creds: ${{ secrets.AZURE_CREDS }}
+        
+        - uses: azure/docker-login@v1
+          with:
+            login-server: ghcr.io
+            username: ${{ github.actor }}
+            password: ${{ secrets.GHCR_PASS }}
+        - run: |
+            docker build . -t ghcr.io/davidsoncollege/traefik-example:${{ github.sha }}
+            docker push ghcr.io/davidsoncollege/traefik-example:${{ github.sha }}
+
+        - name: 'Deploy to Azure Container Instances'
+          uses: 'azure/aci-deploy@v1'
+          with:
+            resource-group: development
+            dns-name-label: traefik-example-2asdf
+            image: ghcr.io/davidsoncollege/traefik-example:${{ github.sha }}
+            registry-username: ${{ github.actor }}
+            registry-password: ${{ secrets.GHCR_PASS }}
+            name: TEST-traefik-service
+            location: 'east us'
+            
