@@ -13,6 +13,7 @@ download-traefik-windows:
 	@exit 1
 
 run: bin/traefik
+	@mkdir -p logs private
 	@echo "######################################################################################\n"
 	@echo "  Traefik Dashboard will be accessible at http://localhost:8080/dashboard/ "
 	@echo "\n######################################################################################\n"
