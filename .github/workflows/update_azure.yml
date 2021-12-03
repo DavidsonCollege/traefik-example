@@ -10,12 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     
-    - name: Azure: Login
+    - name: Azure Login
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDS }}
     
-    - name: Azure: Run "git pull" In Container
+    - name: Azure Run "git pull" In Container
       uses: azure/CLI@v1
       with:
         azcliversion: 2.30.0
