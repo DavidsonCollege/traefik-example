@@ -24,17 +24,17 @@ jobs:
             username: ${{ github.actor }}
             password: ${{ secrets.GHCR_PASS }}
         - run: |
-            docker build . -t ghcr.io/davidsoncollege/traefik-example:${{ github.sha }}
-            docker push ghcr.io/davidsoncollege/traefik-example:${{ github.sha }}
+            docker build . -t ghcr.io/davidsoncollege/traefik-example:latest
+            docker push ghcr.io/davidsoncollege/traefik-example:latest
 
         - name: 'Deploy to Azure Container Instances'
           uses: 'azure/aci-deploy@v1'
           with:
             resource-group: development
             dns-name-label: traefik-example-2asdf
-            image: ghcr.io/davidsoncollege/traefik-example:${{ github.sha }}
+            image: ghcr.io/davidsoncollege/traefik-example:latest
             registry-username: ${{ github.actor }}
             registry-password: ${{ secrets.GHCR_PASS }}
-            name: TEST-traefik-service
+            name: test-traefik-service
             location: 'east us'
             
