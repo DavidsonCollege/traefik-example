@@ -1,0 +1,25 @@
+# Parameters ##################################################################
+
+{{ $domain := "security.ti.davidson.edu" }}
+{{ $target := "https://sites.google.com/davidson.edu/cyber-aware-davidson" }}
+
+# Template ####################################################################
+
+http:
+  {{ $name := $domain | replace "." "-" | printf "REDIRECT-%s" }}
+  routers:
+    {{ $name }}:
+      rule: "Host(`{{ $domain }}`)"
+      service: redirect
+      middlewares:
+      - {{ $name }}
+      entrypoints:
+      - websecure
+  middlewares:
+    {{ $name }}:
+      redirectregex:
+        replacement: "{{ $target }}"
+        permanent: true 
+        regex: "(.*)"
+
+

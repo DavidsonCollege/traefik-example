@@ -1,0 +1,25 @@
+# Parameters ##################################################################
+
+{{ $domain := "studentspeedtest.davidson.edu" }}
+{{ $target := "http://10.48.68.10:3000" }}
+
+# Template ####################################################################
+
+http:
+  {{ $name := $domain | replace "." "-" | printf "REDIRECT-%s" }}
+  routers:
+    {{ $name }}:
+      rule: "Host(`{{ $domain }}`)"
+      service: redirect
+      middlewares:
+      - {{ $name }}
+      entrypoints:
+      - websecure
+  middlewares:
+    {{ $name }}:
+      redirectregex:
+        replacement: "{{ $target }}"
+        permanent: true 
+        regex: "(.*)"
+
+

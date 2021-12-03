@@ -1,0 +1,25 @@
+# Parameters ##################################################################
+
+{{ $domain := "relativeimportance.davidson.edu" }}
+{{ $target := "https://www.scotttonidandel.com/rwa-web" }}
+
+# Template ####################################################################
+
+http:
+  {{ $name := $domain | replace "." "-" | printf "REDIRECT-%s" }}
+  routers:
+    {{ $name }}:
+      rule: "Host(`{{ $domain }}`)"
+      service: redirect
+      middlewares:
+      - {{ $name }}
+      entrypoints:
+      - websecure
+  middlewares:
+    {{ $name }}:
+      redirectregex:
+        replacement: "{{ $target }}"
+        permanent: true 
+        regex: "(.*)"
+
+

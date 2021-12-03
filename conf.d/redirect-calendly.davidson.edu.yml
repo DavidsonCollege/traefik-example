@@ -1,0 +1,25 @@
+# Parameters ##################################################################
+
+{{ $domain := "calendly.davidson.edu" }}
+{{ $target := "https://account.activedirectory.windowsazure.com/applications/signin/calendly/c2f89f53-3971-4e09-8656-18eed74aee10?tenantId=35d8763c-d2b1-4213-b629-f5df0af9e3c3" }}
+
+# Template ####################################################################
+
+http:
+  {{ $name := $domain | replace "." "-" | printf "REDIRECT-%s" }}
+  routers:
+    {{ $name }}:
+      rule: "Host(`{{ $domain }}`)"
+      service: redirect
+      middlewares:
+      - {{ $name }}
+      entrypoints:
+      - websecure
+  middlewares:
+    {{ $name }}:
+      redirectregex:
+        replacement: "{{ $target }}"
+        permanent: true 
+        regex: "(.*)"
+
+

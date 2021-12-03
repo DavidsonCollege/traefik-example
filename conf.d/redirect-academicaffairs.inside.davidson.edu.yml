@@ -1,0 +1,25 @@
+# Parameters ##################################################################
+
+{{ $domain := "academicaffairs.inside.davidson.edu" }}
+{{ $target := "https://sites.google.com/davidson.edu/academicaffairs/home/" }}
+
+# Template ####################################################################
+
+http:
+  {{ $name := $domain | replace "." "-" | printf "REDIRECT-%s" }}
+  routers:
+    {{ $name }}:
+      rule: "Host(`{{ $domain }}`)"
+      service: redirect
+      middlewares:
+      - {{ $name }}
+      entrypoints:
+      - websecure
+  middlewares:
+    {{ $name }}:
+      redirectregex:
+        replacement: "{{ $target }}"
+        permanent: true 
+        regex: "(.*)"
+
+
