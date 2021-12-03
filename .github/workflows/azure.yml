@@ -31,7 +31,8 @@ jobs:
           uses: 'azure/aci-deploy@v1'
           with:
             resource-group: development
-            dns-name-label: traefik-example-2asdf
+            dns-name-label: traefik-service-a4b0
+            ports: 80 443
             image: ghcr.io/davidsoncollege/traefik-example:latest
             registry-login-server: ghcr.io
             registry-username: ${{ github.actor }}
